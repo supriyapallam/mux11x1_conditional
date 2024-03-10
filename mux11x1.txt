@@ -1,0 +1,31 @@
+//Design Code
+module mux11x1(output out,input s3,s2,s1,s0,i0,i1,i2,i3,i4,i5,i6,i7,i8,i9,i10);
+  assign out=s3?(s2?(s1?(s0?i10:i10):(s0?i10:i10)):(s1?(s0?i10:i10):(s0?i9:i8))):(s2?(s1?(s0?i7:i6):(s0?i5:i4)):(s1?(s0?i3:i2):(s0?i1:i0)));
+endmodule
+
+//Test Bench Code
+module test();
+  reg s3,s2,s1,s0,i0,i1,i2,i3,i4,i5,i6,i7,i8,i9,i10;
+  wire out;
+  integer i;
+  mux11x1 DUT(out,s3,s2,s1,s0,i0,i1,i2,i3,i4,i5,i6,i7,i8,i9,i10);
+  initial
+    begin
+      for(i=0;i<32768;i=i+1)
+        begin
+          {s3,s2,s1,s0,i0,i1,i2,i3,i4,i5,i6,i7,i8,i9,i10}=i;
+          #3;
+        end
+      $finish;
+    end
+  initial
+    begin
+      $dumpfile("test.vcd");
+      $dumpvars(1);
+    end
+  initial
+    begin
+      $monitor("time=%0t,s3=%b,s2=%b,s1=%b,s0=%b,i0=%b,i1=%b,i2=%b,i3=%b,i4=%b,i5=%b,i6=%b,i7=%b,i8=%b,i9=%b,i10=%b,out=%b",$time,s3,s2,s1,s0,i0,i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,out);
+    end
+endmodule
+
